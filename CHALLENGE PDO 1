@@ -1,0 +1,64 @@
+<?php
+require_once '_connec.php';
+
+$pdo = new \PDO(DSN, USER, PASS);
+
+
+$query = "SELECT * FROM friend";
+$statement = $pdo->query($query);
+$friends = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+<ul> <?php
+    foreach ($friends as $friend) {
+
+        ?>
+        <li> <?php echo $friend['firstname'] . ' ' . $friend['lastname']; ?> </li> <?php
+    }
+
+    ?>
+</ul>
+<br>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="index.php" method="post">
+    <label for="firstname">First name:</label><br>
+    <input type="text" id="firstname" name="firstname"><br>
+    <label for="lastname">Last name:</label><br>
+    <input type="text" id="lastname" name="lastname"><br><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
+
+
+<?php
+$firstname = trim($_POST['firstname']);
+$lastname = trim($_POST['lastname']);
+$query = "INSERT INTO friend (firstname, lastname) VALUES ('$firstname', '$lastname')";
+$pdo->exec($query);
+
+$query = "SELECT * FROM friend";
+$statement = $pdo->query($query);
+$friends = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+<ul> <?php
+    foreach ($friends as $friend) {
+
+        ?>
+        <li> <?php echo $friend['firstname'] . ' ' . $friend['lastname']; ?> </li> <?php
+    }
+
+    ?>
+</ul>
+<br>
